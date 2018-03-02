@@ -15,7 +15,8 @@ will be using to connect to your server.
 5.  Connect to Raspberry Pi and create .ssh directory. Create authorized_keys 
 file. Change the permissions of files and directory. Use following commands: 
 
-        mkdir .ssh cd .ssh
+        mkdir .ssh 
+        cd .ssh
         touch authorized_keys 
         chmod 700 ~/.ssh/ 
         chmod 600 ~/.ssh/authorized_keys 
