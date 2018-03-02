@@ -7,7 +7,7 @@
 
 3. Enter passphrase. 
 
-4. Public and private keys generated will be in ~/.ssh folder 
+4. Public and private keys generated will be in the `~/.ssh` folder 
 
      id_rsa.pub: This is your public key and will be transferred to your server. 
 
