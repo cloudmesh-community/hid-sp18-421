@@ -1,3 +1,5 @@
+# SSH Key generation
+
 1. First generate SSH key with 2048-bits on main computer that will be used to
    connect to the raspberry Pi cluster. 
 
