@@ -27,7 +27,7 @@
  
          cat ~/.ssh/id_rsa.pub | ssh -p 22 pi@192.168.1.2 'cat >>.ssh/authorized_keys' 
  
-   where 22 is port number and 192.168.1.2 is ip address. 
+   where `22` is the port number and `192.168.1.2` is the ip address. 
 
 7. To removing password Authentication to improve security Login to
    Raspberry Pi and run the following command: 
@@ -39,7 +39,7 @@
 
         #PasswordAuthentication yes 
 
-   and change yes to no and save the file by hitting ctrl+x 
+   and change yes to no and save the file by hitting `ctrl`+`x` 
 
 8.  Restart ssh service with following command. 
 
