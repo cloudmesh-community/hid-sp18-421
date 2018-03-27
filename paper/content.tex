@@ -1,0 +1,211 @@
+% status: 0
+% chapter: TBD
+
+\title{HBase}
+
+
+\author{Priyadarshini Vijjigiri}
+\affiliation{%
+  \institution{Indiana University}
+  \streetaddress{Smith Research Center}
+  \city{Bloomington} 
+  \state{IN} 
+  \postcode{47404}
+}
+\email{trovato@corporation.com}
+
+\author{Gregor von Laszewski}
+\affiliation{%
+  \institution{Indiana University}
+  \streetaddress{Smith Research Center}
+  \city{Bloomington} 
+  \state{IN} 
+  \postcode{47408}
+  \country{USA}}
+\email{laszewski@gmail.com}
+
+
+% The default list of authors is too long for headers}
+\renewcommand{\shortauthors}{G. v. Laszewski}
+
+
+\begin{abstract}
+
+HBase is 'NoSql' database designed after Googles BigTable to handle large datasets
+through the use of coloumn orientation. In this paper we examine HBase by 
+understanding the architecture, key features, components, data flow and limitations.
+
+\end{abstract}
+
+\keywords{hid-sp18-421, Column oriented database}
+
+\maketitle
+
+\section{Introduction}
+
+HBase is a Nosql data base with key-value store. It is developed as a part of
+Apache Hadoop Project. It is a column oriented Database Management systems which
+is built on top of Hadoop Distributed file system. Googles Bigtable is a googles
+NoSql database which is built to handle and quick random acess large data bases
+with billions of rows and millions of columns. HBase is similar to Bigtable and
+built on HDFS. HBase is an open source, distributed, versioned  and non-
+relational database after bigtable~\cite {hid-sp18-421-HBase-intro}. Unlike
+Nosql databases it provides consistency in read and write which makes it
+different from even Nosql databases.
+
+ HBase has many features~\cite{hid-sp18-421-HBase-feature}
+ \begin{description}
+  \item [1.] Scalability is the capability of application to add more machines without 
+ actually changing the source code. HBase is linearly and also modularly 
+ scalable. It can add more machines without changing the application code.
+ \item [2.] As stated already HBase is consistent in reading and writing among the CURD 
+ operations.
+ \item [3.] It has a capability of providing automatic and configurable sharding tables.
+ \item [4.] HBase provides automatic failure support from Region Servers.
+ \item [5.] HBase has easy Java API for client.
+ \end{description}
+
+\section{Column Oriented database}
+
+Column oriented database has different definition compared to row oriented one. 
+It uses columns to store data tables that is each field of all the records in 
+the table is stored  seperately where as row oriented database stores each 
+record. Saving fields rather than records will have efficiency in computations.
+column oriented database makes it easy access of required data among billions of 
+data. 
+
+\section{History}
+
+ After Google released paper on BigTable in 2006, Hadoop contributed a prototype
+of HBase in Feb 2007 and first version of HBase is released in the same year 
+october. HBase became a noticeable project in Jan 2008 and released subsequent 
+versions in two years. In 2010 HBase became a top level project of 
+Apache~\cite{hid-sp18-421-HBase-history}.
+
+\section{Architecture}
+
+HBase works on the concept of Master and Slave architecture. It has 3
+components they are the HMaster, Region Servers and ZooKeeper.   HMaster
+provides administrative functionalities like creation and deletion of tables
+like handling the data by splitting and Region servers act as slaves. Region
+Server communicates with HMaster for the actual files. Regionservers will have a
+memstore where the cache of the file but actual HFile  would be there in Hadoop
+Distributed File systems. And the log files get logged  into WAL of HDFS, so
+whenever any of the Regionserver goes down we can rebuild  everything using the
+log file. Zookeeper performs distribution coordination.
+
+ Data in HBase table is divided horizontally into different Regions. These 
+regions are sorted across different region service. one region server serves 
+thousands of regions. The size of the regionservers are 1GB by default which 
+can be controlled as per the requirement. Every region is sorted according to 
+the key and the content of the region specified by start and the end key. HBase
+is a key value store where value is a set of column families with a key being 
+unique identifier of the records. The client can read from region server any 
+quantity of data and any key they are looking for. The Regions are the horizontal
+subsets of the table which are stored in Region server and are sorted according 
+to the keys. 
+
+ Region Servers and HMaster sends information to the zookeeper regularly. 
+Zookeeper maintains which among them are active and inactive. So multiple 
+HMasters help to rescue during down time which is detected my zookeeper. 
+
+ HMaster is responsible for create and delete tables which are administrative 
+ tasks and the client will connect to HMaster.
+
+ \section{Meta Table} Meta table contains the information that in which region or
+ on which region the start key and end key will be found. If we donot have the 
+ table it will scan every region of the particular table to get a data. when we 
+ wanted to get some data for a particular key and if you have the meta table then 
+ you can directly go to the specified regionserver.
+ \begin{description}
+ \item GET is the operation which client performs to read a particular entry from
+  HBase table.
+\item PUT is the operation performed by the client to add some data to the HBase
+ table.
+\end{description}
+ when ever these operations are required the client connects to the zookeeper to
+ get the address of the meta table, on getting the address of the meta table it 
+ stores the details of the data present in the meta table and looks upto that 
+ particular data. 
+
+
+
+\section{Key Features}
+
+\subsection{Bigdata}
+
+Architecture of HBase is completely distributed and so HBase can work on very 
+large scale data with high speed. 
+
+\subsection{Scalability} 
+
+Facebook Messenger platform collaborates all the messaging platforms together 
+like email, chat, SMS into real-time conversation and so it wanted robust and 
+scalable infrastructure to facilitate these services. It has to store 
+datasets so it requires dataset which has high processing and high performance
+so that it can serve millions of requests at a time. Previously Facebook used 
+Cassandra but after many discussions it shifted from Cassandra to HBase because
+of its good scalability and simpler consistency model. 
+
+
+\subsection{Table Operations} 
+
+Zookeeper service helps to forward clients read request directly to RegionServer.
+``An HBase write to a single row is atomic, meaning the whole operation either 
+succeeds or fails, even if the write occurs across column families. A write 
+operation to multiple rows however is not atomic, some row writes may succeed 
+while others fail.''~\cite{hid-sp18-421-HBase-tableoper}. Multiple values can be
+stored in HBase with timestamp and associated version, live values can be 
+specified for cells which tells HBase to delete cells at intervals. Deletion 
+request is written as tombstone marker to the blocks of data storing the row and 
+the marked data is removed in the next major compaction.
+
+\subsection{Compactions} 
+
+\subsubsection{Minor Compactions}
+
+Data is first written to memstore in HBase after it is full data is written to 
+store-file on disk and marked read-only and when it reaches its threshold a minor
+compaction occurs that merges multiple storefiles.
+
+\subsubsection{Major Compactions}
+Major Compaction runs for every 24 hours which merges all the storefiles into 
+single storefile. Also any row marked as tombstone are deleted
+~\cite{hid-sp18-421-HBase-tableoper}.
+
+
+\subsection{Security and Access Management} 
+
+HBase provides multiple mechanisms to provide high security and to easy control
+or monitor data access to user.
+
+\section{Limitations and Problems with HBase}
+\begin{description}
+  \item Only one HMaster is active at a time and since it acts as cluster for 5000 plus 
+nodes if it goes down inorder to activate other HMaster it will take time.
+ \item Cross data or joint operations cannot be done using HBase.
+ \item Large data is available in RDBMS database source so while migrating data
+ from such sources it may take longer time to create new design.
+ \item Since HBase is not Sql we have to integrate some sql layers for querying.
+ \item Real time queries and sorting is limited by storage memory.
+ \item HBase has expensive hardware and for its performance it requires high 
+ memory machines~\cite{hid-sp18-421-HBase-limitations}.
+\end{description}
+
+\section{Conclusion}
+HBase is open source, column oriented database which handles large datasets with
+billions of rows. Architecture allows it random and fast read and write operations
+which can be scaled to even million/sec. HBase is poor in cross and join operations. 
+
+\begin{acks}
+
+The author would like to thank Dr.~Gregor~von~Laszewski for his support and
+suggestions to write this paper and improve its content.
+
+\end{acks}
+
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{report} 
+
+
