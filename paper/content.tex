@@ -48,12 +48,17 @@ different from even Nosql databases.
   \item [1.] Scalability is the capability of application to add more machines without 
  actually changing the source code. HBase is linearly and also modularly 
  scalable. It can add more machines without changing the application code.
+
  \item [2.] As stated already HBase is consistent in reading and writing among the CURD 
  operations.
+
  \item [3.] It has a capability of providing automatic and configurable sharding tables.
+
  \item [4.] HBase provides automatic failure support from Region Servers.
+
  \item [5.] HBase has easy Java API for client.
  \end{description}
+
 
 \section{Column Oriented database}
 
@@ -63,6 +68,14 @@ the table is stored  seperately where as row oriented database stores each
 record. Saving fields rather than records will have efficiency in computations.
 column oriented database makes it easy access of required data among billions of 
 data. 
+
+
+ \section{Data Storage}
+
+ HBase stores the data in key-value pair. Since it is column oriented database 
+ for every data that is entered into HBase needs a row key. A row is broken into
+ groupings called column families. These column families group similar or 
+ frequently accessed data together. A row key uniquely identifies a row's data.
 
 \section{History}
 
@@ -121,6 +134,12 @@ HMasters help to rescue during down time which is detected my zookeeper.
 
 
 \section{Key Features}
+
+\subsection{Multidimensionality}
+
+Traditional RDMS is two dimensional that means we need row and column to access 
+data where as accessing HBase requires row key, column family name and the column
+name. Also it is a sorted Map, Sparse and consistent. 
 
 \subsection{Bigdata}
 
@@ -182,10 +201,26 @@ nodes if it goes down inorder to activate other HMaster it will take time.
  memory machines~\cite{hid-sp18-421-HBase-limitations}.
 \end{description}
 
-\section{Conclusion}
-HBase is open source, column oriented database which handles large datasets with
-billions of rows. Architecture allows it random and fast read and write operations
-which can be scaled to even million/sec. HBase is poor in cross and join operations. 
+\section{Read and Write Path} 
+
+\subsection{Write} Write or Update operation updates the in-memory data
+(Memstore) and a local disk file(WAL -Write Ahead Log) which is used if incase
+the memory crashes. Over the period of time, the data in Memstore is flushed to
+the HDFS and the Memstore and WAL are cleared.
+
+\subsection{Read} Read operation first looks up the Memstore first and if it is
+not found then it looks in Mem cache(RAM part to keep frequently accessed data).
+If it is not found in Memstore and Mem cache then it looks into HDFS.
+
+\section{When HBase can be used?} HBase can be used when we have High volume
+data, Unstructured, when we need Near Real time Operations, when we have to
+perform Column oriented operations, and when high scalability is required.
+
+
+\section{Conclusion} HBase is open source, column oriented database which
+handles large datasets with billions of rows. Architecture allows it random and
+fast read and write operations which can be scaled to even million/sec. HBase is
+poor in cross and join operations.
 
 \begin{acks}
 
