@@ -59,7 +59,6 @@ different from even Nosql databases.
  \item [5.] HBase has easy Java API for client.
  \end{description}
 
-
 \section{Column Oriented database}
 
 Column oriented database has different definition compared to row oriented one. 
@@ -68,7 +67,6 @@ the table is stored  seperately where as row oriented database stores each
 record. Saving fields rather than records will have efficiency in computations.
 column oriented database makes it easy access of required data among billions of 
 data. 
-
 
  \section{Data Storage}
 
@@ -131,8 +129,6 @@ HMasters help to rescue during down time which is detected my zookeeper.
  stores the details of the data present in the meta table and looks upto that 
  particular data. 
 
-
-
 \section{Key Features}
 
 \subsection{Multidimensionality}
@@ -155,7 +151,6 @@ datasets so it requires dataset which has high processing and high performance
 so that it can serve millions of requests at a time. Previously Facebook used 
 Cassandra but after many discussions it shifted from Cassandra to HBase because
 of its good scalability and simpler consistency model. 
-
 
 \subsection{Table Operations} 
 
@@ -181,7 +176,6 @@ compaction occurs that merges multiple storefiles.
 Major Compaction runs for every 24 hours which merges all the storefiles into 
 single storefile. Also any row marked as tombstone are deleted
 ~\cite{hid-sp18-421-HBase-tableoper}.
-
 
 \subsection{Security and Access Management} 
 
