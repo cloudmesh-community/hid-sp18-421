@@ -6,5 +6,7 @@ def get_log_entry():
 	    f = open('var/log/system.log')
 	    #log_entry = f.readline()
 	    return f.readline()
-	else:
+	elif platform.system() == "linux":
+		return "This linux Docker environment has no logentry files"
+	elif platform.system() == "Windows":
 		return "This linux Docker environment has no logentry files"
