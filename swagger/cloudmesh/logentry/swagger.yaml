@@ -1,0 +1,44 @@
+---
+swagger: "2.0"
+info:
+  description: "A simple service to get log entry from computer system using swagger-2.0\
+    \ specification and codegen"
+  version: "0.0.1"
+  title: "log_entry_from_computer_system"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    name: "Cloudmesh REST Service"
+  license:
+    name: "Apache"
+host: "localhost:8080"
+basePath: "/api"
+schemes:
+- "http"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /log:
+    get:
+      description: "Returns log entry from the system"
+      operationId: "log_get"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Log entry"
+          schema:
+            $ref: "#/definitions/LOG"
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+definitions:
+  LOG:
+    type: "object"
+    required:
+    - "logentry"
+    properties:
+      logentry:
+        type: "string"
+    example:
+      logentry: "logentry"
